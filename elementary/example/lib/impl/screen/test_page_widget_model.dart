@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:counter/akamixin.dart';
 import 'package:counter/impl/screen/test_page_model.dart';
 import 'package:counter/impl/screen/test_page_widget.dart';
 import 'package:elementary/elementary.dart';
@@ -12,12 +13,16 @@ TestPageWidgetModel testPageWidgetModelFactory(BuildContext context) {
 }
 
 class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
+    with AutomaticKeepAliveWidgetModelMixin
     implements ITestPageWidgetModel {
   @override
   ListenableState<EntityState<int>> get valueState => _valueController;
 
   @override
   TextStyle get counterStyle => _counterStyle;
+
+  @override
+  bool get wantKeepAlive => true;
 
   late EntityStateNotifier<int> _valueController;
   late TextStyle _counterStyle;
@@ -36,7 +41,7 @@ class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-
+    
     _valueController = EntityStateNotifier<int>.value(model.value);
   }
 
