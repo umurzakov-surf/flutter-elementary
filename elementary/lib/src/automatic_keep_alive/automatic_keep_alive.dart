@@ -2,20 +2,9 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-class KeepAliveNotification extends Notification {
-  final Listenable handle;
-  const KeepAliveNotification(this.handle) : assert(handle != null);
-}
-
-class KeepAliveHandle extends ChangeNotifier {
-  void release() {
-    notifyListeners();
-  }
-}
-
 @optionalTypeArgs
-mixin AutomaticKeepAliveWidgetModelMixin<W extends WMWidget<IWM>,
-    M extends Model> on WidgetModel<W, M> {
+mixin AutomaticKeepAliveWidgetModelMixin<W extends WMWidget<IWM>, M extends Model>
+    on WidgetModel<W, M> {
   KeepAliveHandle? _keepAliveHandle;
 
   void _ensureKeepAlive() {
@@ -53,10 +42,12 @@ mixin AutomaticKeepAliveWidgetModelMixin<W extends WMWidget<IWM>,
     super.dispose();
   }
 
-  // TODO(butuzov): разобраться в логике, тк в оригинальном миксине здесь возвращается виджет с ошибкой, FLT-1322
+  /// original "build" override analog
   @mustCallSuper
-  Widget build(IWM wm) {
-    if (wantKeepAlive && _keepAliveHandle == null) _ensureKeepAlive();
+  Widget onBuild() {
+    if (wantKeepAlive && _keepAliveHandle == null) {
+      _ensureKeepAlive();
+    }
     return const _NullWidget();
   }
 }
@@ -67,7 +58,7 @@ class _NullWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     throw FlutterError(
-      'Widgets that mix AutomaticKeepAliveClientMixin into their State must '
+      'Widgets that mix AutomaticKeepAliveWidgetModelMixin into their State must '
       'call super.build() but must ignore the return value of the superclass.',
     );
   }
