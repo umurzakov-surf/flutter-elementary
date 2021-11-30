@@ -18,7 +18,7 @@ class TestPageModel extends ElementaryModel {
     }
 
     // пример произошедшей ошибки, которую собираемся обработать визуально
-    handleError(Exception('Тестовая ошибка'));
+    // handleError(Exception('Тестовая ошибка'));
 
     return _value;
   }
